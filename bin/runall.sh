@@ -22,9 +22,6 @@ if [$FULLANALYSIS == "True"]; then
 	./preprocessing-to-OTU-selection.sh "$OUTPUTDIR"
 fi
 
-./OTU-cleaning-and-analysis.sh "$OUTPUTDIR"
-./runsourcetracker.sh
-
 
 
 
