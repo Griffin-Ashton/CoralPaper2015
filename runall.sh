@@ -4,9 +4,13 @@
 #Adam R. Rivers 2015-09-15
 
 #Local variables
+QDEPDIR="/home/adam/qiime_software/"
 OUTPUTDIR=`readlink -f "$1"`
 DATAURL="https://"
 FULLANALYSIS="True"
+
+Source qiime deploy files 
+. $QDEPDIR"/activate.sh
 
 #Retrieve raw data 
 

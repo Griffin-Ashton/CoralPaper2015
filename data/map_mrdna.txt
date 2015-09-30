@@ -1,0 +1,6 @@
+#SampleID	BarcodeSequence	LinkerPrimerSequence	Treatment	DOB	SourceSink	Env	Description
+#Example mapping file for the QIIME analysis package.  							
+Seawater.LK1	TCCACGGC	AGRGTTTGATCMTGGCTCAG	27Fmodtit235	Seawater	source	Seawater	022614DK27F
+Seawater.LK2	TCCACGTG	AGRGTTTGATCMTGGCTCAG	27Fmodtit236	Seawater	source	Seawater	022614DK27F
+Seawater.LK3	TCCAGGTG	AGRGTTTGATCMTGGCTCAG	27Fmodtit237	Seawater	source	Seawater	022614DK27F
+Seawater.LK4	TCCAGTAC	AGRGTTTGATCMTGGCTCAG	27Fmodtit238	Seawater	source	Seawater	022614DK27F
