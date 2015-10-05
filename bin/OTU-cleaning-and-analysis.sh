@@ -12,7 +12,7 @@ $OUTPUTDIR="$1"
 
 #First find how many OTUs are in the complete data set
 biom summarize-table -i "$OUTPUTDIR"/otus/otu_table.biom -o "$OUTPUTDIR"/otus/summary.txt
-#total reads 70422, otus = 3098
+#total reads 66720, otus = 3019
 
 # Remove OTUs with less than 2 sequences
 filter_otus_from_otu_table.py -i "$OUTPUTDIR"/otus/otu_table.biom -o "$OUTPUTDIR"/otus/filtered_otu_table.biom -s 2
@@ -20,7 +20,7 @@ filter_otus_from_otu_table.py -i "$OUTPUTDIR"/otus/otu_table.biom -o "$OUTPUTDIR
 #Summarize the filtered data 
 biom summarize-table -i "$OUTPUTDIR"/otus/filtered_otu_table.biom -o "$OUTPUTDIR"/otus/filtered_summary.txt
 
-#filtered reads remaining: 66627 (95%), otus = 990
+#filtered reads remaining: 62918 (94%), otus = 929
 
 ## Classification ##
 
@@ -42,20 +42,18 @@ filter_taxa_from_otu_table.py -i "$OUTPUTDIR"/otus/otu-w_taxa.biom -o "$OUTPUTDI
 
 #Remove the samples Prim46, Prim57, Prim44
 # run biom to remove them
-biom subset-table -i "$OUTPUTDIR"/otus/otu_table_no_chloro-mito.biom -a samples -s samples_to_keep.txt -o "$OUTPUTDIR"/otus/subset.biom
+biom subset-table -i "$OUTPUTDIR"/otus/otu_table_no_chloro-mito.biom -a samples -s ../data/samples_to_keep.txt -o "$OUTPUTDIR"/otus/subset.biom
 
-##ANALYSIS##
-
-#ANALYSIS
-
-#Paths need to be fixed below here
+## ANALYSIS ##
 
 #Generate plots
-summarize_taxa_through_plots.py -o taxa_summary -i subset.biom -m Map20140425-decon.txt.csv
+summarize_taxa_through_plots.py -o $OUTPUTDIR/taxa_summary -i $OUTPUTDIR/otus/subset.biom -m ../data/map_reduced.txt 
 
-beta_diversity_through_plots.py -i subset.biom -o bdiv_even200/ -t /home/adam/Desktop/corals/results/20140318/otus/rep_set.tre -m /home/adam/Desktop/corals/results/20140424/Map20140425-decon.txt.csv -e 200
+alpha_rarefaction.py -i $OUTPUTDIR/otus/subset.biom -o $OUTPUTDIR/arare/ -t $OUTPUTDIR/otus/rep_set.tre -m ../data/map_reduced.txt -p ../data/arare_params.txt -a -O 3
 
-make_2d_plots.py -i /home/adam/Desktop/corals/results/20140424/bdiv_even200/unweighted_unifrac_pc.txt -m Map20140425-decon.txt.csv -o 2d_plots/
+beta_diversity_through_plots.py -i $OUTPUTDIR/otus/subset.biom -o $OUTPUTDIR/bdiv_even100/ -t $OUTPUTDIR/otus/rep_set.tre -m ../data/map_reduced.txt -e 100
+
+make_2d_plots.py -i $OUTPUTDIR/bdiv_even100/unweighted_unifrac_pc.txt -m ../data/map_reduced.txt -o $OUTPUTDIR/2d_plots/
 
 
 
