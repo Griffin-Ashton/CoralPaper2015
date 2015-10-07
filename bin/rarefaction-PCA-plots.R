@@ -19,7 +19,8 @@ argv <- parse_args(p)
 #tables <- readHTMLTable("~/Desktop/corals/testresults/arare/alpha_rarefaction_plots/rarefaction_plots.html")
 tables <- readHTMLTable(argv$rare)
 data <- tables[[3]]
-data <-data[690:length(data$Description),]
+names(data)[1]<-"Environment"
+data <-data[690:length(data$Environment),]
 names(data) <- sub(" ", ".", names(data))
 names(data) <- sub("/", "", names(data))
 data[data=='nan']<-NA
@@ -31,8 +32,8 @@ group.colors<-c("#940c00","#ff4a3f","#ffbcb4","#4a6bff","#008000")
 
 
 # plot the rarefaction curve using ggplot2
-pdf(argv$rareout, width=7, height=7)
-ggplot(data, aes(x=SeqsSample, y=PD_whole_tree.Ave., colour=Description)) + 
+pdf(argv$rareout, width=7, height=5.5)
+ggplot(data, aes(x=SeqsSample, y=PD_whole_tree.Ave., colour=Environment)) + 
   geom_errorbar(aes(ymin=PD_whole_tree.Ave.-PD_whole_tree.Err., ymax=PD_whole_tree.Ave.+PD_whole_tree.Err.), width=50) +
   geom_line() +
   geom_point() +
@@ -49,6 +50,8 @@ dev.off()
 #pcoa<-read.table('/home/adam/Desktop/corals/results/20140424/bdiv_even200/weighted_unifrac_pc.txt',header=T, sep="\t")
 #pcoa<-read.table('/home/adam/Desktop/corals/testresults/bdiv_even100/weighted_unifrac_pc.txt',header=T, sep="\t")
 pcoa<-read.table(argv$distance, header=T, sep="\t")
+xlabel <-paste("PC1 - ", format(pcoa$X1[19], digits=2), "%", " of variance explained ",sep="")
+ylabel <-paste("PC2 - ", format(pcoa$X2[19], digits=2), "%", " of variance explained ",sep="")
 pcoa<-pcoa[1:17,]
 pcoa<-pcoa[order(pcoa[,1]),]
 
@@ -65,11 +68,11 @@ pcoa.merged<-merge(mapshort,pcoa, by.x="V1", by.y="pc.vector.number")
 #Rename the environment variable 
 names(pcoa.merged)[3]<-"Environment"
 #Plot the PCoA plot 
-pdf(argv$pcaout, width=7, height=7)
+pdf(argv$pcaout, width=7, height=5.5)
 ggplot(pcoa.merged, aes(x=X1, y=X2, colour=Environment))  +
   geom_point(size=4) +
   theme_bw()+
-  ylab("PC2")+
-  xlab("PC1")+
+  ylab(ylabel)+
+  xlab(xlabel)+
   scale_colour_manual(values=group.colors)
 dev.off()
